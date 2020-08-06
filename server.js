@@ -1,4 +1,5 @@
 const express = require('express');
+const connectDB = require('./config/db');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const path = require('path');
@@ -8,6 +9,7 @@ const PORT = process.env.PORT || 5000;
 dotenv.config({ path: './config.env' });
 
 const app = express();
+connectDB();
 
 app.use(express.json(), cors());
 app.use('/api/auth', require('./routes/auth'));

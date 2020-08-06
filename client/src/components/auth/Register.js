@@ -1,13 +1,49 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import img from '../../assets/signup-image.jpg';
 import PropTypes from 'prop-types';
+import { register, clearErrors } from '../../actions/auth';
+import { setAlert } from '../../actions/alert';
 
-const Register = () => {
-  const handleSubmit = e => {
-    e.preventDefault;
+const Register = ({
+  history,
+  register,
+  setAlert,
+  isAuthenticated,
+  error,
+  clearErrors,
+}) => {
+  const [user, setUser] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
+  const { name, email, password } = user;
+
+  const handleChange = e => {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
   };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    register(user);
+  };
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      history.push('/');
+    }
+    if (error === 'User already exists') {
+      setAlert(error, 'danger');
+      clearErrors();
+    }
+  }, [error, isAuthenticated, history]);
   return (
-    <div className='w-full h-full flex flex-col justify-center items-center'>
+    <div className='w-full flex flex-col items-center my-2 md:my-0'>
       <div className='max-w-screen-xl w-8/12 md:w-10/12 lg:8/12 rounded-lg border border-gray-300 shadow-md bg-white'>
         <div className='pb-10 pt-16 md:py-20'>
           <div className='flex flex-col md:flex-row items-center'>
@@ -18,6 +54,7 @@ const Register = () => {
               <form
                 onSubmit={handleSubmit}
                 className='flex flex-col items-center md:items-start w-full'
+                method='post'
               >
                 <div className='flex items-center relative mb-6 w-full lg:w-10/12 px-6 md:pl-0 md:pr-0'>
                   <label htmlFor='name' className='absolute'>
@@ -28,7 +65,8 @@ const Register = () => {
                     type='text'
                     name='name'
                     placeholder='Your Name'
-                    // onChange={handleInputChange}
+                    value={name}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -42,7 +80,8 @@ const Register = () => {
                     type='email'
                     name='email'
                     placeholder='Your Email'
-                    // onChange={handleInputChange}
+                    value={email}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -55,11 +94,16 @@ const Register = () => {
                     type='password'
                     name='password'
                     placeholder='Password'
-                    // onChange={handleInputChange}
+                    value={password}
+                    onChange={handleChange}
+                    minLength='6'
                     required
                   />
                 </div>
-                <button className='bg-blue-400 text-gray-100 py-3 px-8 md:px-8 lg:py-3 lg:px-10 rounded-sm text-xs md:text-sm mb-12 md:mb-0'>
+                <button
+                  className='bg-blue-400 text-gray-100 py-3 px-8 md:px-8 lg:py-3 lg:px-10 rounded-sm text-xs md:text-sm mb-12 md:mb-0'
+                  type='submit'
+                >
                   Register
                 </button>
               </form>
@@ -71,9 +115,9 @@ const Register = () => {
                 alt='Painting like desktop with computer on top and plant on the side'
                 className='mb-8 mx-12'
               />
-              <a href='#!' className='text-sm underline text-center'>
+              <Link to='/signin' className='text-sm underline text-center'>
                 I already got an account
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -82,6 +126,16 @@ const Register = () => {
   );
 };
 
-Register.propTypes = {};
+Register.propTypes = {
+  setAlert: PropTypes.func,
+  register: PropTypes.func,
+};
 
-export default Register;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  error: state.auth.error,
+});
+
+export default connect(mapStateToProps, { setAlert, register, clearErrors })(
+  Register
+);

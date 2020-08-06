@@ -9,16 +9,23 @@
     "build": "webpack --mode production"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-transition-group": "^4.4.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "tailwindcss": "^1.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
     "@babel/preset-env": "^7.10.4",
     "@babel/preset-react": "^7.10.4",
+    "@babel/runtime": "^7.10.5",
+    "@fullhuman/postcss-purgecss": "^2.3.0",
     "autoprefixer": "^9.8.4",
     "babel-loader": "^8.1.0",
     "css-loader": "^3.6.0",
@@ -29,10 +36,12 @@
     "postcss-cli": "^7.1.1",
     "postcss-loader": "^3.0.0",
     "prettier": "2.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "style-loader": "^1.2.1",
-    "tailwindcss": "^1.4.6",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
-  }
+  },
+  "proxy": "http://127.0.0.1:5000",
+  "secure": false
 }
