@@ -25,7 +25,7 @@ const Contacts = ({ contacts, filtered, getContacts, loading }) => {
                 <ContactItem contact={contact} />
               </CSSTransition>
             ))
-          ) : contacts !== null && contacts.length > 0 ? (
+          ) : contacts !== null && !loading ? (
             contacts.map(contact => (
               <CSSTransition key={contact._id} timeout={500} classNames='item'>
                 <ContactItem contact={contact} />

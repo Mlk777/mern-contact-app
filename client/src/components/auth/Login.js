@@ -33,7 +33,7 @@ const Login = ({
   };
 
   useEffect(() => {
-    if (isAuthenticated) return history.push('/');
+    if (isAuthenticated) history.push('/');
     if (error === 'Invalid Credentials') {
       setAlert(error, 'danger');
       clearErrors();
