@@ -1,12 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import {
-  deleteContact,
-  setCurrent,
-  clearCurrent,
-  getContacts,
-} from '../../actions/contact';
+import { deleteContact, setCurrent, clearCurrent } from '../../actions/contact';
 
 const ContactItem = ({ contact, deleteContact, setCurrent, clearCurrent }) => {
   const badge =
@@ -17,7 +12,6 @@ const ContactItem = ({ contact, deleteContact, setCurrent, clearCurrent }) => {
     clearCurrent();
   };
   return (
-    // <div className='w-full p-3 flex flex-col bg-white m-2 border border-gray-600 rounded'>
     <div className='w-full p-3 my-2 md:m-2 flex flex-col bg-white border border-gray-300 rounded-md'>
       <div className='flex justify-between'>
         <p className='text-lg font-semibold italic tracking-wide'>
