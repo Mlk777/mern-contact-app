@@ -2,10 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
-  devtool: 'inline-source-map',
+  devtool: false,
+  // devtool: 'inline-source-map',
   entry: './src/index.js',
   output: {
-    path: path.resolve(__dirname, '/dist'),
+    path: path.resolve(__dirname, 'build'),
     publicPath: '/',
     filename: 'bundle.[hash].js',
   },
@@ -19,7 +20,16 @@ module.exports = {
     }),
   ],
   devServer: {
-    contentBase: './dist',
+    historyApiFallback: true,
+    proxy: {
+      '/api/**': {
+        target: 'http://[::1]:5000',
+        changeOrigin: true,
+        secure: false,
+      },
+      logLevel: 'debug',
+    },
+    contentBase: path.resolve(__dirname, 'build'),
     clientLogLevel: 'silent',
   },
   module: {
@@ -38,6 +48,14 @@ module.exports = {
         ],
       },
       {
+        test: /\.(png|jpe?g|gif|webp)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
+      {
         test: /\.css$/i,
         use: [
           MiniCssExtractPlugin.loader,
@@ -47,13 +65,14 @@ module.exports = {
               importLoaders: 1,
             },
           },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: [require('tailwindcss'), require('autoprefixer')],
-            },
-          },
+          'postcss-loader',
+          // {
+          //   loader: 'postcss-loader',
+          //   options: {
+          //     ident: 'postcss',
+          //     plugins: [require('tailwindcss'), require('autoprefixer')],
+          //   },
+          // },
         ],
       },
     ],
